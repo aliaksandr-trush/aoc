@@ -7,6 +7,10 @@ struct Card {
     my_points: Vec<u32>,
 }
 
+fn parse_points(input: &str) -> Vec<u32> {
+    input.trim().replace("  ", " ").split(" ").map(|x| x.parse::<u32>().unwrap()).collect()
+}
+
 impl Card {
     fn from(line: &str) -> Result<Self, Box<dyn Error>> {
         let (card_name, card_data) = line.split_once(":").unwrap();
@@ -17,18 +21,8 @@ impl Card {
 
         Ok(Card {
             number: card_number.trim().parse::<u32>()?,
-            valid_points: valid_points
-                .trim()
-                .replace("  ", " ")
-                .split(" ")
-                .map(|x| x.parse::<u32>().unwrap())
-                .collect(),
-            my_points: my_points
-                .trim()
-                .replace("  ", " ")
-                .split(" ")
-                .map(|x| x.parse::<u32>().unwrap())
-                .collect(),
+            valid_points: parse_points(valid_points),
+            my_points: parse_points(my_points),
         })
     }
 
